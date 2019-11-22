@@ -57,6 +57,7 @@ export default {
       return statusMap[status]
     }
   },
+  name: 'Table',
   data() {
     return {
       list: null,

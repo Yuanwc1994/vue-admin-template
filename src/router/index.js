@@ -32,6 +32,17 @@ import Layout from '@/layout'
  */
 export const constantRoutes = [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -51,7 +62,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
     }]
   },
 
@@ -93,7 +104,7 @@ export const constantRoutes = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/menu1',
+    redirect: '/nested/menu1/menu1-1',
     name: 'Nested',
     meta: {
       title: 'Nested',
@@ -105,6 +116,7 @@ export const constantRoutes = [
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'Menu1',
         meta: { title: 'Menu1' },
+        redirect: '/nested/menu1/menu1-1',
         children: [
           {
             path: 'menu1-1',
@@ -142,6 +154,7 @@ export const constantRoutes = [
       },
       {
         path: 'menu2',
+        name: 'Menu2',
         component: () => import('@/views/nested/menu2/index'),
         meta: { title: 'menu2' }
       }
