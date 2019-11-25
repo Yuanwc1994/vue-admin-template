@@ -21,6 +21,7 @@ import Layout from '@/layout'
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
     breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
+    noCache: true                //如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
     activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
   }
  */
@@ -160,23 +161,26 @@ export const constantRoutes = [
         ]
     },
 
+
+]
+
+export const asyncRoutes = [
     {
         path: 'external-link',
         component: Layout,
         children: [
             {
                 path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-                meta: { title: 'External Link', icon: 'link' }
+                meta: {
+                    title: 'External Link',
+                    icon: 'link',
+                    roles: ['admin']
+                }
             }
         ]
     },
-
     // 404 page must be placed at the end !!!
     { path: '*', redirect: '/404', hidden: true }
-]
-
-export const asyncRoutes = [
-
 ]
 
 const createRouter = () => new Router({

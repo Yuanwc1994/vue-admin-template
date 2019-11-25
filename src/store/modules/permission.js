@@ -9,7 +9,7 @@ function hasPermission(roles, route) {
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {
-    return true
+    return true //没有设置roles的都不需要权限
   }
 }
 
@@ -35,14 +35,14 @@ export function filterAsyncRoutes(routes, roles) {
 }
 
 const state = {
-  routes: [],
-  addRoutes: []
+  routes: [], //所有路由
+  addRoutes: [] //动态添加的路由
 }
 
 const mutations = {
   SET_ROUTES: (state, routes) => {
-    state.addRoutes = routes
-    state.routes = constantRoutes.concat(routes)
+    state.addRoutes = routes //添加的动态路由
+    state.routes = constantRoutes.concat(routes) //合并动态路由（即所有路由）
   }
 }
 
@@ -50,13 +50,13 @@ const actions = {
   generateRoutes({ commit }, roles) {
     return new Promise(resolve => {
       let accessedRoutes
-      if (roles.includes('admin')) {
+      if (roles.includes('admin')) { //如果是管理账号，都把动态路由加到路由表
         accessedRoutes = asyncRoutes || []
-      } else {
+      } else { //如果不是管理账号，把（过滤）有权限的动态路由加到路由表
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
+      commit('SET_ROUTES', accessedRoutes) //设置路由状态
+      resolve(accessedRoutes) //返回动态路由
     })
   }
 }
