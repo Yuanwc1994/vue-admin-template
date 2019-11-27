@@ -1,3 +1,9 @@
+
+#### 该分支基于PanjiaChen的vue-admin-template基础版,只是添加/修改了：
+    1、 快捷导航(标签栏导航)
+    2、 权限动态路由
+    3、 显示logo图标
+
 # vue-admin-template
 
 English | [简体中文](./README-zh.md)
