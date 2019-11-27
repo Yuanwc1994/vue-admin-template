@@ -20,8 +20,9 @@ import Layout from '@/layout'
     roles: ['admin','editor']    control the page roles (you can set multiple roles)
     title: 'title'               the name show in sidebar and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar
+    noCache: true                if set true, the page will no be cached(default is false)
+    affix: true                  if set true, the tag will affix in the tags-view
     breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    noCache: true                //如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
     activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
   }
  */
