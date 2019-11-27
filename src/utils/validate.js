@@ -3,7 +3,7 @@
  */
 
 /**
- * @param {string} path
+ * @param {string} path // 判断字符串是否是https?:|mailto:|tal: 开头的
  * @returns {Boolean}
  */
 export function isExternal(path) {
@@ -11,7 +11,7 @@ export function isExternal(path) {
 }
 
 /**
- * @param {string} str
+ * @param {string} str //检验字符串是否是 admin  editor
  * @returns {Boolean}
  */
 export function validUsername(str) {
