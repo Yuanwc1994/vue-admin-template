@@ -1,18 +1,22 @@
-import { login, logout, getInfo } from '@/api/user'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+// import { login, logout, getInfo } from '@/api/user'
+import { login, logout } from '@/api/login'
+import { getToken, setToken, removeToken, getUserInfo, setUserInfo, removeUserInfo } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 
 const state = {
     token: getToken(),
+    UserInfo: getUserInfo(),
     name: '',
     avatar: '',
     roles: [],
-    introduction: ''
 }
 
 const mutations = {
     SET_TOKEN: (state, token) => {
         state.token = token
+    },
+    SET_USERINFO: (state, UserInfo) => {
+        state.UserInfo = UserInfo
     },
     SET_NAME: (state, name) => {
         state.name = name
@@ -22,10 +26,8 @@ const mutations = {
     },
     SET_ROLES: (state, roles) => {
         state.roles = roles
-    },
-    SET_INTRODUCTION: (state, introduction) => {
-        state.introduction = introduction
     }
+
 }
 
 const actions = {
@@ -33,10 +35,13 @@ const actions = {
     login({ commit }, userInfo) {
         const { username, password } = userInfo
         return new Promise((resolve, reject) => {
-            login({ username: username.trim(), password: password }).then(response => {
-                const { data } = response
-                commit('SET_TOKEN', data.token)
-                setToken(data.token) //登录成功后将token存储在cookie之中
+            login({ userName: username.trim(), password: password }).then(response => {
+                console.log('登录成功：', response);
+                const { body } = response
+                commit('SET_TOKEN', body.token)
+                commit('SET_USERINFO', body.user)
+                setToken(body.token) //登录成功后将token存储在cookie之中
+                setUserInfo(body.user) //登录成功后将user存储在cookie之中
                 resolve()
             }).catch(error => {
                 reject(error)
@@ -44,7 +49,7 @@ const actions = {
         })
     },
 
-    // get user info
+    /* // get user info
     getInfo({ commit, state }) {
         return new Promise((resolve, reject) => {
             getInfo(state.token).then(response => {
@@ -70,8 +75,15 @@ const actions = {
                 reject(error)
             })
         })
+    }, */
+    setUser({ commit, state }) {
+        return new Promise(resolve => {
+            commit('SET_NAME', state.UserInfo.userName)
+            commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif')
+            commit('SET_ROLES', [state.UserInfo.userName])
+            resolve()
+        })
     },
-
     // user logout
     logout({ commit, state, dispatch }) {
         return new Promise((resolve, reject) => {
@@ -80,7 +92,9 @@ const actions = {
                 commit('SET_NAME', '')
                 commit('SET_AVATAR', '')
                 commit('SET_ROLES', [])
+                commit('SET_USERINFO', '')
                 removeToken()
+                removeUserInfo()
                 resetRouter()
 
                 // reset visited views and cached views
@@ -100,6 +114,7 @@ const actions = {
             commit('SET_TOKEN', '')
             commit('SET_ROLES', [])
             removeToken()
+            removeUserInfo()
             resolve()
         })
     }

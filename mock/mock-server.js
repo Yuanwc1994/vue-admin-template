@@ -2,7 +2,7 @@ const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
-
+console.log('已启动mock');
 const mockDir = path.join(process.cwd(), 'mock')
 
 function registerRoutes(app) {

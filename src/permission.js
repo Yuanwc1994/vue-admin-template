@@ -1,4 +1,4 @@
-import router from './router'
+import router, { asyncRoutes } from './router'
 import store from './store'
 import { Message } from 'element-ui'
 import NProgress from 'nprogress' // progress bar
@@ -32,7 +32,7 @@ router.beforeEach(async (to, from, next) => {
                 next() //当有用户权限的时候，说明所有可访问路由已生成 如访问没权限的全面会自动进入404页面
             } else {
                 try {
-                    // get user info
+                    /* // get user info
                     // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
                     const { roles } = await store.dispatch('user/getInfo') // 拉取user_info
 
@@ -43,7 +43,14 @@ router.beforeEach(async (to, from, next) => {
                     router.addRoutes(accessRoutes) // 动态添加可访问路由表
                     // hack method to ensure that addRoutes is complete
                     // set the replace: true, so the navigation will not leave a history record
-                    next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
+                    next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 */
+
+                    console.log('已添加路由');
+                    await store.dispatch('user/setUser') // 刷新时vuex状态会被重置，所以重新设置user_info
+                    const accessRoutes = await store.dispatch('permission/generateRoutesNew', asyncRoutes) // 处理并过滤动态菜单，返回可访问的路由表
+                    router.addRoutes(accessRoutes) // 现在直接加上动态路由，
+                    next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 */
+
                 } catch (error) {
                     // remove token and go to login page to re-login
                     await store.dispatch('user/resetToken')

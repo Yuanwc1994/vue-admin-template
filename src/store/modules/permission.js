@@ -58,7 +58,13 @@ const actions = {
       commit('SET_ROUTES', accessedRoutes) //设置路由状态
       resolve(accessedRoutes) //返回动态路由
     })
-  }
+  },
+  generateRoutesNew({ commit }, route) {
+    return new Promise(resolve => {
+      commit('SET_ROUTES', route) // 设置左侧菜单
+      resolve(route) // 返回可访问路由
+    })
+  },
 }
 
 export default {
